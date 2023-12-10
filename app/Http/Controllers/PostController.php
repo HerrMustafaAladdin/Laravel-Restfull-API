@@ -13,55 +13,17 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        return response()->json($posts, 200);
+        return $this->successResponce(200,Post::all(),'get all posts');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    protected function successResponce($code, $data, $message = null)
     {
-        //
+        return response()->json([
+            'status'    =>  'success',
+            'message'   =>  $message,
+            'data'      =>  $data
+        ],$code);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorePostRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePostRequest $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        //
-    }
 }
