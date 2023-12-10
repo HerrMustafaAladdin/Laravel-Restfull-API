@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,7 +25,7 @@ class PostController extends ApiController
         $validator = Validator::make(request()->all(),[
             'title'     =>  'required|string',
             'body'      =>  'required|string',
-            'image'     =>  'required',
+            'image'     =>  'required|image',
             'user_id'   =>  'required',
         ]);
 
@@ -33,11 +34,13 @@ class PostController extends ApiController
             return $this->errorResponce(422, $validator->messages());
         }
 
+        $imageName = Carbon::now()->microsecond. "." . $request->image->extension();
+        $request->image->storeAs('images/posts', $imageName, 'public');
 
         $post = Post::create([
             'title'     =>  $request->input('title'),
             'body'      =>  $request->input('body'),
-            'image'     =>  $request->input('image'),
+            'image'     =>  $imageName,
             'user_id'   =>  $request->input('user_id'),
         ]);
 
