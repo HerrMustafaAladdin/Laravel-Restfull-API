@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -48,7 +49,8 @@ class PostController extends ApiController
 
     public function show(Post $post)
     {
-        return $this->successResponce(200, $post, "Get [Post : $post->title] successfully .");
+        // return $this->successResponce(200, $post, "Get [Post : $post->title] successfully .");
+        return new PostResource($post);
     }
 
     /**
@@ -84,7 +86,7 @@ class PostController extends ApiController
 
     public function delete(Post $post)
     {
-        $post->delete(); 
+        $post->delete();
         return $this->successResponce(200,$post, 'Deleted successfully.');
     }
 }
