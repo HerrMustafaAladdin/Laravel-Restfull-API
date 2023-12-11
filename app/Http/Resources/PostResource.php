@@ -14,6 +14,12 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        // return parent::toArray($request);
+        return [
+            'ID'            =>  $this->id,
+            'Title'         =>  $this->title,
+            'Body'          =>  $this->body,
+            'Created At'    =>  $this->created_at->format('Y/m/d H:i')
+        ];
     }
 }
