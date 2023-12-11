@@ -81,4 +81,10 @@ class PostController extends ApiController
 
         return $this->successResponce(200, $post, 'updated post successfully.');
     }
+
+    public function delete(Post $post)
+    {
+        $post->delete(); 
+        return $this->successResponce(200,$post, 'Deleted successfully.');
+    }
 }
