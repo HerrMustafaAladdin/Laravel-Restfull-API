@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\V1\PostController as V1PostController;
+use App\Http\Controllers\Api\V2\PostController as V2PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// =================================================== Version 1
+Route::prefix('V1')->group(function(){
+
+    // ------------------------------------ Posts
+    Route::apiResource('posts',V1PostController::class);
+
+});
+
+// =================================================== Version 2
+Route::prefix('V2')->group(function(){
+
+    // ------------------------------------ Posts
+    Route::apiResource('posts',V2PostController::class);
+
+});
