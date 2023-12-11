@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -17,8 +19,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return response()->json(new UserCollection($users), 200);
+        $users = User::query()->paginate(1);
+        return $this->successResponce(200,[
+            'users' =>  UserResource::collection($users->load('posts')),
+            'links' =>  PostResource::collection($users)->response()->getData()->links,
+            'links' =>  PostResource::collection($users)->response()->getData()->meta
+        ],'OK!');
     }
 
     /**
