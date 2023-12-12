@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class PostController extends Controller
 {
     use ApiResponser;
+
     /**
         Get All posts
     */
@@ -55,24 +56,50 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        //
+        return $this->successResponce('200', $post, "Show post with ID : $post->id");
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'title'     =>  'required|min:3|max:30|string',
+            'body'      =>  'required|min:10|max:1000|string',
+            'image'     =>  'mimes:png,jpg,webp,svg,jpeg',
+            'user_id'   =>  'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return $this->errorResponce(224, $validator->messages());
+        }
+
+        if($request->has('image'))
+        {
+            $imageName = generateFileNameImages($request->image);
+            uploadFileImage($request->image, env('POSTS_PATH_NAME'),$imageName);
+        }
+
+        $post->query()->update([
+            'title'     =>  $request->input('title'),
+            'body'      =>  $request->input('body'),
+            'image'     =>  $request->has('image') ? $imageName : $post->image,
+            'user_id'   =>  $request->input('user_id')
+        ]);
+
+        return $this->successResponce('201', $post, 'updated post successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return $this->successResponce(204, $post, 'Deleted post successfully.');
     }
 }
