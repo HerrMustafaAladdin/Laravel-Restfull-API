@@ -1,7 +1,12 @@
 <?php
 
+//===================================================================== Version 1
 use App\Http\Controllers\Api\V1\PostController as V1PostController;
+use App\Http\Controllers\Api\V1\UserController as V1UserController;
+
+//===================================================================== Version 2
 use App\Http\Controllers\Api\V2\PostController as V2PostController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,8 +23,15 @@ use Illuminate\Support\Facades\Route;
 // =================================================== Version 1
 Route::prefix('V1')->group(function(){
 
-    // ------------------------------------ Posts
+    /*
+        ------------------------------------ Posts
+    */
     Route::apiResource('posts',V1PostController::class);
+
+    /*
+        ------------------------------------ users
+    */
+    Route::apiResource('users',V1UserController::class);
 
 });
 
