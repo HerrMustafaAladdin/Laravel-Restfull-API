@@ -5,17 +5,21 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\PostResource;
 use App\Models\Post;
+use App\Traits\ApiResponser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
+    use ApiResponser;
     /**
-     * Display a listing of the resource.
-     */
+        Get All posts
+    */
     public function index()
     {
         $posts = Post::query()->paginate(10);
-        return PostResource::collection($posts);
+        return $this->successResponce(200, PostResource::collection($posts), 'Get all data successfully.');
     }
 
     /**
@@ -23,7 +27,29 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'title'     =>  'required|min:3|max:30|string',
+            'body'      =>  'required|min:10|max:1000|string',
+            'image'     =>  'required|mimes:png,jpg,webp,svg,jpeg',
+            'user_id'   =>  'required'
+        ]);
+        if($validator->fails())
+        {
+            return $this->errorResponce(224, $validator->messages());
+        }
+
+        $imageName = generateFileNameImages($request->image);
+        uploadFileImage($request->image, env('POSTS_PATH_NAME'),$imageName);
+
+        $post = Post::query()->create([
+            'title'     =>  $request->input('title'),
+            'body'      =>  $request->input('body'),
+            'image'     =>  $imageName,
+            'user_id'   =>  $request->input('user_id')
+        ]);
+
+        return $this->successResponce('201', $post, 'create post successfully');
+
     }
 
     /**
