@@ -49,7 +49,7 @@ class PostController extends Controller
             'user_id'   =>  $request->input('user_id')
         ]);
 
-        return $this->successResponce('201', $post, 'create post successfully');
+        return $this->successResponce('201', (new PostResource($post)), 'create post successfully');
 
     }
 
@@ -58,7 +58,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $this->successResponce('200', $post, "Show post with ID : $post->id");
+        return $this->successResponce('200', (new PostResource($post)), "Show post with ID : $post->id");
     }
 
     /**
@@ -91,7 +91,7 @@ class PostController extends Controller
             'user_id'   =>  $request->input('user_id')
         ]);
 
-        return $this->successResponce('201', $post, 'updated post successfully');
+        return $this->successResponce('201', (new PostResource($post)), 'updated post successfully');
     }
 
     /**
@@ -100,6 +100,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return $this->successResponce(204, $post, 'Deleted post successfully.');
+        return $this->successResponce(204, (new PostResource($post)), 'Deleted post successfully.');
     }
 }
