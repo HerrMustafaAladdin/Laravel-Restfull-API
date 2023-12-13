@@ -14,10 +14,8 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 ## About this project
 This project is written based on API. which includes three parts
--[Token-based authentication system]
--[Create, edit, delete and display users]
--[Create, edit, delete and display Posts]
+- [Token-based authentication system]
+- [Create, edit, delete and display users]
+- [Create, edit, delete and display Posts]
 
-Danke
-Mostafa Alaeddin
-
+## packages 
